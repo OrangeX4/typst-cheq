@@ -1,19 +1,18 @@
-#let _unchecked_prefix = [[ ] ]
-#let _checked_prefix = [[x] ]
-#let _incomplete_prefix = [[/] ]
-#let _cancelled_prefix = [[-] ]
-#let _forwarded_prefix = [[>] ]
-#let _scheduling_prefix = [[<] ]
-#let _question_prefix = [[?] ]
-#let _important_prefix = [[!] ]
-#let _star_prefix = [[\*] ]
-#let _quote_prefix = [["] ]
-
+/// `unchecked-sym` function.
+///
+/// - `fill`: [`string`] - The fill color for the unchecked symbol.
+/// - `stroke`: [`string`] - The stroke color for the unchecked symbol.
+/// - `radius`: [`string`] - The radius of the unchecked symbol.
 #let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
   dy: -.08em,
   box(stroke: .05em + stroke, fill: fill, height: .8em, width: .8em, radius: radius),
 )
 
+/// `checked-sym` function.
+///
+/// - `fill`: [`string`] - The fill color for the checked symbol.
+/// - `stroke`: [`string`] - The stroke color for the checked symbol.
+/// - `radius`: [`string`] - The radius of the checked symbol.
 #let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
   dy: -.08em,
   box(
@@ -29,6 +28,11 @@
   ),
 )
 
+/// `incomplete-sym` function.
+///
+/// - `fill`: [`string`] - The fill color for the incomplete symbol.
+/// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
+/// - `radius`: [`string`] - The radius of the incomplete symbol.
 #let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
   dy: -.08em,
   box(
@@ -38,132 +42,133 @@
     width: .8em,
     radius: radius,
     {
-      move(dx: 0.39em, box(fill: stroke, height: .8em, width: .4em, radius: (top-right: radius, bottom-right: radius)))
+      box(fill: stroke, height: .8em, width: .4em, radius: (top-left: radius, bottom-left: radius))
     },
   ),
 )
 
+/// `canceled-sym` function.
+///
+/// - `fill`: [`string`] - The fill color for the canceled symbol.
+/// - `stroke`: [`string`] - The stroke color for the canceled symbol.
+/// - `radius`: [`string`] - The radius of the canceled symbol.
+#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
+  dy: -.08em,
+  box(
+    stroke: .05em + stroke,
+    fill: stroke,
+    height: .8em,
+    width: .8em,
+    radius: radius,
+    {
+      align(center + horizon, box(height: .125em, width: 0.55em, fill: fill))
+    },
+  ),
+)
+
+
+/// `checklist` function.
+///
+/// Example: `#show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)`
+///
+/// **Arguments:**
+///
+/// - `fill`: [`string`] - The fill color for the checklist marker.
+/// - `stroke`: [`string`] - The stroke color for the checklist marker.
+/// - `radius`: [`string`] - The radius of the checklist marker.
+/// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double)`.
+/// - `body`: [`content`] - The main body from `#show: checklist` rule.
+///
+/// The default map is:
+///
+/// ```typ
+/// #let default-map = (
+///   "x": checked-sym(fill: fill, stroke: stroke, radius: radius),
+///   " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
+///   "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
+///   "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
+///   ">": "➡",
+///   "<": "📆",
+///   "?": "❓",
+///   "!": "❗",
+///   "*": "⭐",
+///   "\"": "❝",
+///   "l": "📍",
+///   "b": "🔖",
+///   "i": "ℹ️",
+///   "S": "💰",
+///   "I": "💡",
+///   "p": "👍",
+///   "c": "👎",
+///   "f": "🔥",
+///   "k": "🔑",
+///   "w": "🏆",
+///   "u": "🔼",
+///   "d": "🔽",
+/// )
+/// ```
 #let checklist(
   fill: white,
   stroke: rgb("#616161"),
   radius: .1em,
-  default: ([•], [‣], [–]),
-  unchecked: auto,
-  checked: auto,
-  incomplete: auto,
-  cancelled: auto,
-  forwarded: auto,
-  scheduling: auto,
-  question: auto,
-  important: auto,
-  star: auto,
-  quote: auto,
+  marker-map: (:),
   body,
 ) = {
-  if unchecked == auto {
-    unchecked = unchecked-sym(fill: fill, stroke: stroke, radius: radius)
-  }
-
-  if checked == auto {
-    checked = checked-sym(fill: fill, stroke: stroke, radius: radius)
-  }
-
-  if incomplete == auto {
-    incomplete = incomplete-sym(fill: fill, stroke: stroke, radius: radius)
-  }
-
-  if cancelled == auto {
-    cancelled = default
-  }
-
-  if forwarded == auto {
-    forwarded = default
-  }
-
-  if scheduling == auto {
-    scheduling = default
-  }
-
-  if question == auto {
-    question = default
-  }
-
-  if important == auto {
-    important = default
-  }
-
-  if star == auto {
-    star = default
-  }
-
-  if quote == auto {
-    quote = default
-  }
+  let default-map = (
+    "x": checked-sym(fill: fill, stroke: stroke, radius: radius),
+    " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
+    "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
+    "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
+    ">": "➡",
+    "<": "📆",
+    "?": "❓",
+    "!": "❗",
+    "*": "⭐",
+    "\"": "❝",
+    "l": "📍",
+    "b": "🔖",
+    "i": "ℹ️",
+    "S": "💰",
+    "I": "💡",
+    "p": "👍",
+    "c": "👎",
+    "f": "🔥",
+    "k": "🔑",
+    "w": "🏆",
+    "u": "🔼",
+    "d": "🔽",
+  )
+  let marker-map = default-map + marker-map
 
   show list.item: it => {
-    if type(it.body) == content and it.body.func() == [].func() {
-      let children = it.body.children
+    // The body should be a sequence
+    if not (type(it.body) == content and it.body.func() == [].func()) {
+      return it
+    }
+    let children = it.body.children
 
-      // A checklist item has at least 5 children: `[`, markder, `]`, space, content
-      if children.len() >= 5 {
-        let prefix = children.slice(0, 4).sum()
+    // A checklist item has at least 5 children: `[`, markder, `]`, space, content
+    if children.len() < 5 or not (children.at(0) == [#"["] and children.at(2) == [#"]"] and children.at(3) == [ ]) {
+      return it
+    }
 
-        if prefix == _unchecked_prefix {
-          list(
-            marker: unchecked,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _checked_prefix {
-          list(
-            marker: checked,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _incomplete_prefix {
-          list(
-            marker: incomplete,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _cancelled_prefix {
-          list(
-            marker: cancelled,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _forwarded_prefix {
-          list(
-            marker: forwarded,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _scheduling_prefix {
-          list(
-            marker: scheduling,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _question_prefix {
-          list(
-            marker: question,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _important_prefix {
-          list(
-            marker: important,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _star_prefix {
-          list(
-            marker: star,
-            children.slice(4).sum(),
-          )
-        } else if prefix == _quote_prefix {
-          list(
-            marker: quote,
-            children.slice(4).sum(),
-          )
-        } else {
-          it
-        }
-      } else {
-        it
-      }
+    let marker-text = if children.at(1) == [ ] {
+      " "
+    } else if children.at(1) == ["] {
+      "\""
+    } else if children.at(1) == ['] {
+      "'"
+    } else if children.at(1).has("text") {
+      children.at(1).text
+    } else {
+      none
+    }
+
+    if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
+      list(
+        marker: marker-map.at(marker-text),
+        children.slice(4).sum(),
+      )
     } else {
       it
     }
