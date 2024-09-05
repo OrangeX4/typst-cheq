@@ -1,4 +1,4 @@
-#import "@preview/cheq:0.1.0": checklist
+#import "../lib.typ": checklist
 
 #set page(width: auto, height: auto, margin: 2em)
 
@@ -10,13 +10,13 @@
 - [x] Venus
 - [x] Earth (Orbit/Moon)
 - [x] Mars
-- [ ] Jupiter
-- [ ] Saturn
+- [-] Jupiter
+- [/] Saturn
 - [ ] Uranus
 - [ ] Neptune
 - [ ] Comet Haley
 
-#show: checklist.with(unchecked: sym.ballot, checked: sym.ballot.x)
+#show: checklist.with(marker-map: (" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double))
 
 = Solar System Exploration, 1950s – 1960s
 
@@ -24,8 +24,8 @@
 - [x] Venus
 - [x] Earth (Orbit/Moon)
 - [x] Mars
-- [ ] Jupiter
-- [ ] Saturn
+- [-] Jupiter
+- [/] Saturn
 - [ ] Uranus
 - [ ] Neptune
 - [ ] Comet Haley
