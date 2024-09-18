@@ -50,7 +50,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 ## Custom Styles
 
 ```typ
-#import "@preview/cheq:0.1.0": checklist
+#import "@preview/cheq:0.2.0": checklist
 
 #show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)
 
