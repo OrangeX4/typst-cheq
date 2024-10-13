@@ -7,7 +7,7 @@ Write markdown-like checklist easily.
 Checklists are incredibly useful for keeping track of important items. We can use the cheq package to achieve checklist syntax similar to [GitHub Flavored Markdown](https://github.github.com/gfm/#task-list-items-extension-) and [Minimal](https://minimal.guide/checklists).
 
 ```typ
-#import "@preview/cheq:0.2.0": checklist
+#import "@preview/cheq:0.2.1": checklist
 
 #show: checklist
 
@@ -50,7 +50,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 ## Custom Styles
 
 ```typ
-#import "@preview/cheq:0.2.0": checklist
+#import "@preview/cheq:0.2.1": checklist
 
 #show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)
 

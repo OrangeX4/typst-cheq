@@ -1,6 +1,6 @@
 [package]
 name = "cheq"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["OrangeX4", "Myriad-Dreamin", "duskmoon314"]
 entrypoint = "lib.typ"
 exclude = ["./examples"]
