@@ -77,6 +77,7 @@
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double)`.
+/// - `show-list-set-block`: [`dict`] - The configuration of the block in list. It should be a dictionary of `above` and `below` keys, such as `(above: .5em)`.
 /// - `body`: [`content`] - The main body from `#show: checklist` rule.
 ///
 /// The default map is:
@@ -112,6 +113,7 @@
   stroke: rgb("#616161"),
   radius: .1em,
   marker-map: (:),
+  show-list-set-block: (above: .5em),
   body,
 ) = {
   let default-map = (
@@ -139,6 +141,15 @@
     "d": "🔽",
   )
   let marker-map = default-map + marker-map
+
+  show: body => {
+    if show-list-set-block != none {
+      show list: set block(..show-list-set-block)
+      body
+    } else {
+      body
+    }
+  }
 
   show list.item: it => {
     // The body should be a sequence
