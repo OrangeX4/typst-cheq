@@ -77,7 +77,7 @@
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double)`.
-/// - `show-list-set-block`: [`dict`] - The configuration of the block in list. It should be a dictionary of `above` and `below` keys, such as `(above: .5em)`.
+/// - `show-list-set-block`: [`dictionary`] - The configuration of the block in list. It should be a dictionary of `above` and `below` keys, such as `(above: .5em)`.
 /// - `body`: [`content`] - The main body from `#show: checklist` rule.
 ///
 /// The default map is:
