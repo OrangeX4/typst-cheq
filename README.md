@@ -66,7 +66,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 - [ ] Neptune
 - [ ] Comet Haley
 
-#show: checklist.with(marker-map: (" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double))
+#show: checklist.with(marker-map: (" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double))
 
 = Solar System Exploration, 1950s – 1960s
 
@@ -100,7 +100,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 - `fill`: [`string`] &mdash; The fill color for the checklist marker.
 - `stroke`: [`string`] &mdash; The stroke color for the checklist marker.
 - `radius`: [`string`] &mdash; The radius of the checklist marker.
-- `marker-map`: [`map`] &mdash; The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double)`.
+- `marker-map`: [`map`] &mdash; The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
 - `show-list-set-block`: [`dictionary`] - The configuration of the block in list. It should be a dictionary of `above` and `below` keys, such as `(above: .5em)`.
 - `body`: [`content`] &mdash; The main body from `#show: checklist` rule.
 

@@ -16,7 +16,7 @@
 - [ ] Neptune
 - [ ] Comet Haley
 
-#show: checklist.with(marker-map: (" ": sym.ballot, "x": sym.ballot.x, "-": sym.bar.h, "/": sym.slash.double))
+#show: checklist.with(marker-map: (" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double))
 
 = Solar System Exploration, 1950s – 1960s
 
