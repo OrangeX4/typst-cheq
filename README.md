@@ -7,7 +7,7 @@ Write markdown-like checklist easily.
 Checklists are incredibly useful for keeping track of important items. We can use the cheq package to achieve checklist syntax similar to [GitHub Flavored Markdown](https://github.github.com/gfm/#task-list-items-extension-) and [Minimal](https://minimal.guide/checklists).
 
 ```typ
-#import "@preview/cheq:0.2.2": checklist
+#import "@preview/cheq:0.2.3": checklist
 
 #show: checklist
 
@@ -50,7 +50,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 ## Custom Styles
 
 ```typ
-#import "@preview/cheq:0.2.2": checklist
+#import "@preview/cheq:0.2.3": checklist
 
 #show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)
 
@@ -184,7 +184,11 @@ The default map is:
 - `stroke`: [`string`] &mdash; The stroke color for the canceled symbol.
 - `radius`: [`string`] &mdash; The radius of the canceled symbol.
 
+## Experimental HTML Support
 
+Cheq provides experimental support for HTML rendering, allowing you to embed HTML elements within Typst documents. This feature is still under active development, and the external API is not exposed at this time. It is subject to change without notice and may have compatibility issues.
+
+![HTML Example](./examples/html.png)
 
 
 ## License

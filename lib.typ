@@ -3,68 +3,62 @@
 /// - `fill`: [`string`] - The fill color for the unchecked symbol.
 /// - `stroke`: [`string`] - The stroke color for the unchecked symbol.
 /// - `radius`: [`string`] - The radius of the unchecked symbol.
-#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
-  dy: -.08em,
-  box(stroke: .05em + stroke, fill: fill, height: .8em, width: .8em, radius: radius),
-)
+#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+  stroke: .05em + stroke,
+  fill: fill,
+  height: .8em,
+  width: .8em,
+  radius: radius,
+))
 
 /// `checked-sym` function.
 ///
 /// - `fill`: [`string`] - The fill color for the checked symbol.
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
-#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
-  dy: -.08em,
-  box(
-    stroke: .05em + stroke,
-    fill: stroke,
-    height: .8em,
-    width: .8em,
-    radius: radius,
-    {
-      box(move(dy: .48em, dx: 0.1em, rotate(45deg, reflow: false, line(length: 0.3em, stroke: fill + .1em))))
-      box(move(dy: .38em, dx: -0.05em, rotate(-45deg, reflow: false, line(length: 0.48em, stroke: fill + .1em))))
-    },
-  ),
-)
+#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+  stroke: .05em + stroke,
+  fill: stroke,
+  height: .8em,
+  width: .8em,
+  radius: radius,
+  {
+    box(move(dy: .48em, dx: 0.1em, rotate(45deg, reflow: false, line(length: 0.3em, stroke: fill + .1em))))
+    box(move(dy: .38em, dx: -0.05em, rotate(-45deg, reflow: false, line(length: 0.48em, stroke: fill + .1em))))
+  },
+))
 
 /// `incomplete-sym` function.
 ///
 /// - `fill`: [`string`] - The fill color for the incomplete symbol.
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
-#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
-  dy: -.08em,
-  box(
-    stroke: .05em + stroke,
-    fill: fill,
-    height: .8em,
-    width: .8em,
-    radius: radius,
-    {
-      box(fill: stroke, height: .8em, width: .4em, radius: (top-left: radius, bottom-left: radius))
-    },
-  ),
-)
+#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+  stroke: .05em + stroke,
+  fill: fill,
+  height: .8em,
+  width: .8em,
+  radius: radius,
+  {
+    box(fill: stroke, height: .8em, width: .4em, radius: (top-left: radius, bottom-left: radius))
+  },
+))
 
 /// `canceled-sym` function.
 ///
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
-#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(
-  dy: -.08em,
-  box(
-    stroke: .05em + stroke,
-    fill: stroke,
-    height: .8em,
-    width: .8em,
-    radius: radius,
-    {
-      align(center + horizon, box(height: .125em, width: 0.55em, fill: fill))
-    },
-  ),
-)
+#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+  stroke: .05em + stroke,
+  fill: stroke,
+  height: .8em,
+  width: .8em,
+  radius: radius,
+  {
+    align(center + horizon, box(height: .125em, width: 0.55em, fill: fill))
+  },
+))
 
 
 /// `checklist` function.
@@ -176,10 +170,41 @@
     }
 
     if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
-      list(
-        marker: marker-map.at(marker-text),
-        children.slice(4).sum(),
-      )
+      if "html" in dictionary(std) and target() == "html" {
+        list.item(
+          box(if marker-text == "x" {
+            html.elem("input", attrs: (
+              type: "checkbox",
+              style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+              checked: "checked",
+            ))
+          } else if marker-text == " " {
+            html.elem("input", attrs: (
+              type: "checkbox",
+              style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+            ))
+          } else if type(marker-map.at(marker-text)) == str {
+            html.elem(
+              "span",
+              attrs: (
+                style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.4em;",
+              ),
+              marker-map.at(marker-text),
+            )
+          } else {
+            html.elem(
+              "span",
+              attrs: (
+                style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.3em;",
+              ),
+              html.frame(marker-map.at(marker-text)),
+            )
+          })
+            + children.slice(4).sum(),
+        )
+      } else {
+        list(marker: marker-map.at(marker-text), children.slice(4).sum())
+      }
     } else {
       it
     }
