@@ -71,7 +71,6 @@
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
-/// - `show-list-set-block`: [`dictionary`] - The configuration of the block in list. It should be a dictionary of `above` and `below` keys, such as `(above: .5em)`.
 /// - `body`: [`content`] - The main body from `#show: checklist` rule.
 ///
 /// The default map is:
@@ -107,7 +106,6 @@
   stroke: rgb("#616161"),
   radius: .1em,
   marker-map: (:),
-  show-list-set-block: (above: .5em),
   body,
 ) = {
   let default-map = (
@@ -136,75 +134,101 @@
   )
   let marker-map = default-map + marker-map
 
-  show: body => {
-    if show-list-set-block != none {
-      show list: set block(..show-list-set-block)
-      body
+  show list: it => {
+
+    let is-checklist = false
+    let items-list = ()
+    let symbols-list = ()
+    let default-marker = if type(it.marker) == array {
+      it.marker.at(0)
     } else {
-      body
-    }
-  }
-
-  show list.item: it => {
-    // The body should be a sequence
-    if not (type(it.body) == content and it.body.func() == [].func()) {
-      return it
-    }
-    let children = it.body.children
-
-    // A checklist item has at least 5 children: `[`, markder, `]`, space, content
-    if children.len() < 5 or not (children.at(0) == [#"["] and children.at(2) == [#"]"] and children.at(3) == [ ]) {
-      return it
+      it.marker
     }
 
-    let marker-text = if children.at(1) == [ ] {
-      " "
-    } else if children.at(1) == ["] {
-      "\""
-    } else if children.at(1) == ['] {
-      "'"
-    } else if children.at(1).has("text") {
-      children.at(1).text
-    } else {
-      none
-    }
+    for list-children in it.children {
 
-    if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
-      if "html" in dictionary(std) and target() == "html" {
-        list.item(
-          box(if marker-text == "x" {
-            html.elem("input", attrs: (
-              type: "checkbox",
-              style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
-              checked: "checked",
-            ))
-          } else if marker-text == " " {
-            html.elem("input", attrs: (
-              type: "checkbox",
-              style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
-            ))
-          } else if type(marker-map.at(marker-text)) == str {
-            html.elem(
-              "span",
-              attrs: (
-                style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.4em;",
-              ),
-              marker-map.at(marker-text),
-            )
-          } else {
-            html.elem(
-              "span",
-              attrs: (
-                style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.3em;",
-              ),
-              html.frame(marker-map.at(marker-text)),
-            )
-          })
-            + children.slice(4).sum(),
-        )
+      if not (type(list-children.body) == content and list-children.body.func() == [].func()) {      
+        symbols-list.push(default-marker)
+        items-list.push(list-children.body)
       } else {
-        list(marker: marker-map.at(marker-text), children.slice(4).sum())
+        let children = list-children.body.children
+
+        // A checklist item has at least 5 children: `[`, marker, `]`, space, content
+        if children.len() < 5 or not (children.at(0) == [#"["] and children.at(2) == [#"]"] and children.at(3) == [ ]) {
+          // [alt 2 -- ]
+          symbols-list.push(default-marker)
+          items-list.push(list-children.body)
+        }else {
+          let marker-text = if children.at(1) == [ ] {
+            " "
+          } else if children.at(1) == ["] {
+            "\""
+          } else if children.at(1) == ['] {
+            "'"
+          } else if children.at(1).has("text") {
+            children.at(1).text
+          } else {
+            none
+          }
+
+          if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
+            if "html" in dictionary(std) and target() == "html" {
+              list.item(
+                box(if marker-text == "x" {
+                  html.elem("input", attrs: (
+                    type: "checkbox",
+                    style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+                    checked: "checked",
+                  ))
+                } else if marker-text == " " {
+                  html.elem("input", attrs: (
+                    type: "checkbox",
+                    style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+                  ))
+                } else if type(marker-map.at(marker-text)) == str {
+                  html.elem(
+                    "span",
+                    attrs: (
+                      style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.4em;",
+                    ),
+                    marker-map.at(marker-text),
+                  )
+                } else {
+                  html.elem(
+                    "span",
+                    attrs: (
+                      style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.3em;",
+                    ),
+                    html.frame(marker-map.at(marker-text)),
+                  )
+                })
+                  + children.slice(4).sum(),
+              )
+            } else {
+              symbols-list.push(marker-map.at(marker-text)) 
+              items-list.push(children.slice(4).sum())
+              is-checklist = true
+            }
+          } else {
+            symbols-list.push(default-marker)
+            items-list.push(list-children.body)
+          }
+        }
       }
+    }
+
+    if is-checklist {
+      let cheklist-enumeration(n) = {
+        symbols-list.at(n - 1)
+      }
+      set enum(
+        numbering: cheklist-enumeration,
+        tight: it.tight,
+        indent: it.indent,
+        body-indent: it.body-indent,
+        spacing: it.spacing,
+        )
+      enum(..items-list)
     } else {
       it
     }
@@ -212,3 +236,5 @@
 
   body
 }
+
+
