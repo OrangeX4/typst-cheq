@@ -18,7 +18,7 @@ without `checklist`
 #colbreak()
 
 // #import "@preview/cheq:0.2.3": checklist
-#import "checklists.typ": checklist
+#import "../lib.typ": checklist
 
 #show: checklist
 
