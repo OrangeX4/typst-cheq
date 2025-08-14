@@ -172,6 +172,7 @@
           }
 
           if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
+            is-checklist = true
             if "html" in dictionary(std) and target() == "html" {
               list.item(
                 box(if marker-text == "x" {
@@ -207,7 +208,6 @@
             } else {
               symbols-list.push(marker-map.at(marker-text)) 
               items-list.push(children.slice(4).sum())
-              is-checklist = true
             }
           } else {
             symbols-list.push(default-marker)
@@ -218,6 +218,7 @@
     }
 
     if is-checklist {
+      if not("html" in dictionary(std) and target() == "html") {
       let cheklist-enumeration(n) = {
         symbols-list.at(n - 1)
       }
@@ -229,6 +230,7 @@
         spacing: it.spacing,
         )
       enum(..items-list)
+      }
     } else {
       it
     }
