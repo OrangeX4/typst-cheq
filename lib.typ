@@ -135,7 +135,6 @@
   let marker-map = default-map + marker-map
 
   show list: it => {
-
     let is-checklist = false
     let items-list = ()
     let symbols-list = ()
@@ -146,8 +145,7 @@
     }
 
     for list-children in it.children {
-
-      if not (type(list-children.body) == content and list-children.body.func() == [].func()) {      
+      if not (type(list-children.body) == content and list-children.body.func() == [].func()) {
         symbols-list.push(default-marker)
         items-list.push(list-children.body)
       } else {
@@ -158,7 +156,7 @@
           // [alt 2 -- ]
           symbols-list.push(default-marker)
           items-list.push(list-children.body)
-        }else {
+        } else {
           let marker-text = if children.at(1) == [ ] {
             " "
           } else if children.at(1) == ["] {
@@ -206,7 +204,7 @@
                   + children.slice(4).sum(),
               )
             } else {
-              symbols-list.push(marker-map.at(marker-text)) 
+              symbols-list.push(marker-map.at(marker-text))
               items-list.push(children.slice(4).sum())
             }
           } else {
@@ -218,18 +216,18 @@
     }
 
     if is-checklist {
-      if not("html" in dictionary(std) and target() == "html") {
-      let cheklist-enumeration(n) = {
-        symbols-list.at(n - 1)
-      }
-      set enum(
-        numbering: cheklist-enumeration,
-        tight: it.tight,
-        indent: it.indent,
-        body-indent: it.body-indent,
-        spacing: it.spacing,
+      if not ("html" in dictionary(std) and target() == "html") {
+        let cheklist-enumeration(n) = {
+          symbols-list.at(n - 1)
+        }
+        enum(
+          numbering: cheklist-enumeration,
+          tight: it.tight,
+          indent: it.indent,
+          body-indent: it.body-indent,
+          spacing: it.spacing,
+          ..items-list,
         )
-      enum(..items-list)
       }
     } else {
       it
@@ -238,5 +236,3 @@
 
   body
 }
-
-
