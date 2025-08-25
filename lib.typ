@@ -61,6 +61,23 @@
 ))
 
 
+/// `character-sym` function.
+///
+/// - `fill`: [`string`] - The fill color for the canceled symbol.
+/// - `stroke`: [`string`] - The stroke color for the canceled symbol.
+/// - `radius`: [`string`] - The radius of the canceled symbol.
+#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em,) = move(dy: -.08em, box(
+  stroke: .05em + stroke,
+  fill: stroke,
+  height: .8em,
+  width: .8em,
+  radius: radius,
+  {
+    align(center + horizon, text(size: 0.8em, fill: fill , weight: "bold", symbol))
+  },
+))
+
+
 /// `checklist` function.
 ///
 /// Example: `#show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)`
@@ -115,24 +132,24 @@
     " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
     "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
     "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
-    ">": "➡",
-    "<": "📆",
-    "?": "❓",
-    "!": "❗",
-    "*": "⭐",
-    "\"": "❝",
-    "l": "📍",
-    "b": "🔖",
-    "i": "ℹ️",
-    "S": "💰",
-    "I": "💡",
-    "p": "👍",
-    "c": "👎",
-    "f": "🔥",
-    "k": "🔑",
-    "w": "🏆",
-    "u": "🔼",
-    "d": "🔽",
+    // ">": "➡",
+    // "<": "📆",
+    // "?": "❓",
+    // "!": "❗",
+    // "*": "⭐",
+    // "\"": "❝",
+    // "l": "📍",
+    // "b": "🔖",
+    // "i": "ℹ️",
+    // "S": "💰",
+    // "I": "💡",
+    // "p": "👍",
+    // "c": "👎",
+    // "f": "🔥",
+    // "k": "🔑",
+    // "w": "🏆",
+    // "u": "🔼",
+    // "d": "🔽",
   )
   let marker-map = default-map + marker-map
 
@@ -176,48 +193,53 @@
             none
           }
 
-          if marker-text != none and marker-text in marker-map and marker-map.at(marker-text) != none {
-            is-checklist = true
-            if "html" in dictionary(std) and target() == "html" {
-              list.item(
-                box(if marker-text == "x" {
-                  html.elem("input", attrs: (
-                    type: "checkbox",
-                    style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
-                    checked: "checked",
-                  ))
-                } else if marker-text == " " {
-                  html.elem("input", attrs: (
-                    type: "checkbox",
-                    style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
-                  ))
-                } else if type(marker-map.at(marker-text)) == str {
-                  html.elem(
-                    "span",
-                    attrs: (
-                      style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.4em;",
-                    ),
-                    marker-map.at(marker-text),
-                  )
-                } else {
-                  html.elem(
-                    "span",
-                    attrs: (
-                      style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.3em;",
-                    ),
-                    html.frame(marker-map.at(marker-text)),
-                  )
-                })
-                  + children.slice(4).sum(),
-              )
-            } else {
-              symbols-list.push(marker-map.at(marker-text))
-              if highlight-item {
-                let highligh-func = highlight-map.at(marker-text, default: it => {it})
-                items-list.push(highligh-func(children.slice(4).sum()))
-              } else { 
-                items-list.push(children.slice(4).sum())
+          if marker-text != none {
+            if marker-text in marker-map and marker-map.at(marker-text) != none {
+              is-checklist = true
+              if "html" in dictionary(std) and target() == "html" {
+                list.item(
+                  box(if marker-text == "x" {
+                    html.elem("input", attrs: (
+                      type: "checkbox",
+                      style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+                      checked: "checked",
+                    ))
+                  } else if marker-text == " " {
+                    html.elem("input", attrs: (
+                      type: "checkbox",
+                      style: "margin: 0 .2em .25em -1.4em; vertical-align: middle;",
+                    ))
+                  } else if type(marker-map.at(marker-text)) == str {
+                    html.elem(
+                      "span",
+                      attrs: (
+                        style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.4em;",
+                      ),
+                      marker-map.at(marker-text),
+                    )
+                  } else {
+                    html.elem(
+                      "span",
+                      attrs: (
+                        style: "display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; vertical-align: middle; margin: 0 .2em .25em -1.3em;",
+                      ),
+                      html.frame(marker-map.at(marker-text)),
+                    )
+                  })
+                    + children.slice(4).sum(),
+                )
+              } else {
+                symbols-list.push(marker-map.at(marker-text))
+                if highlight-item {
+                  let highligh-func = highlight-map.at(marker-text, default: it => {it})
+                  items-list.push(highligh-func(children.slice(4).sum()))
+                } else { 
+                  items-list.push(children.slice(4).sum())
+                }
               }
+            } else {
+              symbols-list.push(character-sym(symbol: marker-text, fill: fill, stroke: stroke, radius: radius))
+              items-list.push(children.slice(4).sum())
             }
           } else {
             symbols-list.push(default-marker)
