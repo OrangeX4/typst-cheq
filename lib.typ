@@ -194,8 +194,8 @@
           }
 
           if marker-text != none {
+            is-checklist = true
             if marker-text in marker-map and marker-map.at(marker-text) != none {
-              is-checklist = true
               if "html" in dictionary(std) and target() == "html" {
                 list.item(
                   box(if marker-text == "x" {
