@@ -230,16 +230,17 @@
                 )
               } else {
                 symbols-list.push(marker-map.at(marker-text))
-                if highlight-item {
-                  let highligh-func = highlight-map.at(marker-text, default: it => {it})
-                  items-list.push(highligh-func(children.slice(4).sum()))
-                } else { 
-                  items-list.push(children.slice(4).sum())
-                }
               }
             } else {
               symbols-list.push(character-sym(symbol: marker-text, fill: fill, stroke: stroke, radius: radius))
-              items-list.push(children.slice(4).sum())
+            }
+            if not ("html" in dictionary(std) and target() == "html") {
+              if highlight-item {
+                let highligh-func = highlight-map.at(marker-text, default: it => {it})
+                items-list.push(highligh-func(children.slice(4).sum()))
+              } else { 
+                items-list.push(children.slice(4).sum())
+              }
             }
           } else {
             symbols-list.push(default-marker)
