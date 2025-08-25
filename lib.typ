@@ -106,6 +106,8 @@
   stroke: rgb("#616161"),
   radius: .1em,
   marker-map: (:),
+  highlight-map: (:),
+  highlight-item: true,
   body,
 ) = {
   let default-map = (
@@ -133,6 +135,11 @@
     "d": "🔽",
   )
   let marker-map = default-map + marker-map
+
+  let default-highlight = (
+    "-": it => {strike(text(fill: rgb("#888888"), it))},
+  )
+  let highlight-map = default-highlight + highlight-map
 
   show list: it => {
     let is-checklist = false
@@ -205,7 +212,12 @@
               )
             } else {
               symbols-list.push(marker-map.at(marker-text))
-              items-list.push(children.slice(4).sum())
+              if highlight-item {
+                let highligh-func = highlight-map.at(marker-text, default: it => {it})
+                items-list.push(highligh-func(children.slice(4).sum()))
+              } else { 
+                items-list.push(children.slice(4).sum())
+              }
             }
           } else {
             symbols-list.push(default-marker)
