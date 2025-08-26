@@ -16,6 +16,7 @@
 /// - `fill`: [`string`] - The fill color for the checked symbol.
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
+/// - `light` : ['bool'] - The style of the checked symbol (light or dark)
 #let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
@@ -33,6 +34,7 @@
 /// - `fill`: [`string`] - The fill color for the incomplete symbol.
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
+/// - `light` : ['bool'] - The style of the incomplete symbol (light or dark)
 #let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
   fill: fill,
@@ -51,6 +53,7 @@
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
+/// - `light` : ['bool'] - The style of the canceled symbol (light or dark)
 #let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
@@ -65,9 +68,11 @@
 
 /// `character-sym` function.
 ///
-/// - `fill`: [`string`] - The fill color for the canceled symbol.
-/// - `stroke`: [`string`] - The stroke color for the canceled symbol.
-/// - `radius`: [`string`] - The radius of the canceled symbol.
+/// - `symbol`: [`string`] - The character that will be put inside the checkbox
+/// - `fill`: [`string`] - The fill color for the character symbol.
+/// - `stroke`: [`string`] - The stroke color for the character symbol.
+/// - `radius`: [`string`] - The radius of the character symbol.
+/// - `light` : ['bool'] - The style of the character symbol (light or dark)
 #let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
@@ -89,7 +94,11 @@
 /// - `fill`: [`string`] - The fill color for the checklist marker.
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
+/// - `light`: [`bool'] - The style of the markers, light or dark.
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
+/// - `highlight-map`: [`map`] - The map of the highlight functions. It should be a map of characther to functions, see examples.
+/// - `highlight`: [`bool`] - The flag to enable or disable the application of highlight functions to the list item.
+/// - `extras`: [`bool`] - The flag that includes or excludes the extra map of symbols
 /// - `body`: [`content`] - The main body from `#show: checklist` rule.
 ///
 /// The default map is:
@@ -97,9 +106,17 @@
 /// ```typ
 /// #let default-map = (
 ///   "x": checked-sym(fill: fill, stroke: stroke, radius: radius),
-///   " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
-///   "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
-///   "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
+///   " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius, light: false),
+///   "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius, light: false),
+///   "-": canceled-sym(fill: fill, stroke: stroke, radius: radius, light: false),
+/// )
+/// ```
+/// 
+/// The extra map is:
+/// 
+/// ```typ
+/// 
+/// #let extra-map = (
 ///   ">": "➡",
 ///   "<": "📆",
 ///   "?": "❓",
@@ -187,7 +204,6 @@
 
         // A checklist item has at least 5 children: `[`, marker, `]`, space, content
         if children.len() < 5 or not (children.at(0) == [#"["] and children.at(2) == [#"]"] and children.at(3) == [ ]) {
-          // [alt 2 -- ]
           symbols-list.push(default-marker)
           items-list.push(list-children.body)
         } else {
