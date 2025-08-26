@@ -13,9 +13,11 @@
 - [-] Jupiter
 - [/] Saturn
 - [ ] Uranus
-- [ ] Neptune
-- [ ] Comet Haley
+- [!] Neptune
+- [?] Comet Halley
+- [N] Oort Cloud
 
+#show: checklist.with(extras: true)
 
 = Extras
 
