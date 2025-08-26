@@ -16,15 +16,15 @@
 /// - `fill`: [`string`] - The fill color for the checked symbol.
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
-#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
-  fill: stroke,
+  fill: if light {fill} else {stroke},
   height: .8em,
   width: .8em,
   radius: radius,
   {
-    box(move(dy: .48em, dx: 0.1em, rotate(45deg, reflow: false, line(length: 0.3em, stroke: fill + .1em))))
-    box(move(dy: .38em, dx: -0.05em, rotate(-45deg, reflow: false, line(length: 0.48em, stroke: fill + .1em))))
+    box(move(dy: .48em, dx: 0.1em, rotate(45deg, reflow: false, line(length: 0.3em, stroke: if light {stroke} else {fill} + .1em))))
+    box(move(dy: .38em, dx: -0.05em, rotate(-45deg, reflow: false, line(length: 0.48em, stroke: if light {stroke} else {fill} + .1em))))
   },
 ))
 
@@ -33,13 +33,15 @@
 /// - `fill`: [`string`] - The fill color for the incomplete symbol.
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
-#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
   fill: fill,
   height: .8em,
   width: .8em,
   radius: radius,
-  {
+  if light{
+    box(move(dy: .4em, dx: 0.0em, rotate(90deg, reflow: false, line(length: 0.8em, stroke: if light {stroke} else {fill} + .1em))))
+  } else {
     box(fill: stroke, height: .8em, width: .4em, radius: (top-left: radius, bottom-left: radius))
   },
 ))
@@ -49,14 +51,14 @@
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
-#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
-  fill: stroke,
+  fill: if light {fill} else {stroke},
   height: .8em,
   width: .8em,
   radius: radius,
   {
-    align(center + horizon, box(height: .125em, width: 0.55em, fill: fill))
+    align(center + horizon, box(height: .125em, width: 0.55em, fill: if light {stroke} else {fill}))
   },
 ))
 
@@ -66,14 +68,14 @@
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
-#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em,) = move(dy: -.08em, box(
+#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
   stroke: .05em + stroke,
-  fill: stroke,
+  fill: if light {fill} else {stroke},
   height: .8em,
   width: .8em,
   radius: radius,
   {
-    align(center + horizon, text(size: 0.8em, fill: fill , weight: "bold", symbol))
+    align(center + horizon, text(size: 0.8em, fill: if light {stroke} else {fill} , weight: "bold", symbol))
   },
 ))
 
@@ -122,17 +124,18 @@
   fill: white,
   stroke: rgb("#616161"),
   radius: .1em,
+  light: false, 
   marker-map: (:),
   highlight-map: (:),
-  highlight-item: true,
-  extras : false, 
+  highlight: true,
+  extras: false, 
   body,
 ) = {
   let default-map = (
-    "x": checked-sym(fill: fill, stroke: stroke, radius: radius),
     " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
-    "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
-    "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
+    "x": checked-sym(fill: fill, stroke: stroke, radius: radius, light: light),
+    "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius, light: light),
+    "-": canceled-sym(fill: fill, stroke: stroke, radius: radius, light: light),
   )
 
   let extra-map = (
@@ -156,7 +159,7 @@
     "d": "🔽",
   )
 
-  if extras {let default-map = default-map + extra-map}
+  let default-map = default-map + if extras {extra-map} else {(:)}
 
   let marker-map = default-map + marker-map
 
@@ -239,10 +242,10 @@
                 symbols-list.push(marker-map.at(marker-text))
               }
             } else {
-              symbols-list.push(character-sym(symbol: marker-text, fill: fill, stroke: stroke, radius: radius))
+              symbols-list.push(character-sym(symbol: marker-text, fill: fill, stroke: stroke, radius: radius, light: light))
             }
             if not ("html" in dictionary(std) and target() == "html") {
-              if highlight-item {
+              if highlight {
                 let highligh-func = highlight-map.at(marker-text, default: it => {it})
                 items-list.push(highligh-func(children.slice(4).sum()))
               } else { 
