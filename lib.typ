@@ -125,6 +125,7 @@
   marker-map: (:),
   highlight-map: (:),
   highlight-item: true,
+  extras : false, 
   body,
 ) = {
   let default-map = (
@@ -132,25 +133,31 @@
     " ": unchecked-sym(fill: fill, stroke: stroke, radius: radius),
     "/": incomplete-sym(fill: fill, stroke: stroke, radius: radius),
     "-": canceled-sym(fill: fill, stroke: stroke, radius: radius),
-    // ">": "➡",
-    // "<": "📆",
-    // "?": "❓",
-    // "!": "❗",
-    // "*": "⭐",
-    // "\"": "❝",
-    // "l": "📍",
-    // "b": "🔖",
-    // "i": "ℹ️",
-    // "S": "💰",
-    // "I": "💡",
-    // "p": "👍",
-    // "c": "👎",
-    // "f": "🔥",
-    // "k": "🔑",
-    // "w": "🏆",
-    // "u": "🔼",
-    // "d": "🔽",
   )
+
+  let extra-map = (
+    ">": "➡",
+    "<": "📆",
+    "?": "❓",
+    "!": "❗",
+    "*": "⭐",
+    "\"": "❝",
+    "l": "📍",
+    "b": "🔖",
+    "i": "ℹ️",
+    "S": "💰",
+    "I": "💡",
+    "p": "👍",
+    "c": "👎",
+    "f": "🔥",
+    "k": "🔑",
+    "w": "🏆",
+    "u": "🔼",
+    "d": "🔽",
+  )
+
+  if extras {let default-map = default-map + extra-map}
+
   let marker-map = default-map + marker-map
 
   let default-highlight = (
