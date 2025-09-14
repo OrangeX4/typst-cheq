@@ -17,7 +17,7 @@
 - [?] Comet Halley
 - [N] Oort Cloud
 
-#show: checklist.with(light: true)
+#show: checklist.with(light: true, size: 1em)
 
 = Solar System Exploration, 1950s – 1960s
 

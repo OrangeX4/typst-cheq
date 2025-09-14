@@ -76,7 +76,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - [?] Comet Halley
 - [N] Oort Cloud
 
-#show: checklist.with(light: true)
+#show: checklist.with(light: true, size: 1em)
 
 = Solar System Exploration, 1950s – 1960s
 
@@ -124,7 +124,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 
 ![Example](./examples/custom-styles.png)
 
-## Custom Hihlightd Of List Items
+## Custom Highlight Of List Items
 
 ```typ
 #import "@preview/cheq:0.3.0": checklist
@@ -170,6 +170,40 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 ![Example](./examples/highlight-items.png)
 
 
+## Outlines
+
+You can create an outline for all items with the same symbol. Just specify the "kind" of figure in the outline as "cheq-" + the character of the items you want to collect.
+
+```typ
+#import "@preview/cheq:0.3.0": checklist
+#show: checklist
+
+#set page(width: 5in, height: auto, margin: 2em)
+
+
+#outline(title: [Visited], target: figure.where(kind: "cheq-x"))
+
+#outline(title: [Incomplete], target: figure.where(kind: "cheq-/"))
+
+
+
+= Solar System Exploration, 1950s – 1960s
+
+- [ ] Mercury
+- [x] Venus
+- [x] Earth (Orbit/Moon)
+- [x] Mars
+- [-] Jupiter
+- [/] Saturn
+- [ ] Uranus
+- [!] Neptune
+- [?] Comet Halley
+- [N] Oort Cloud
+```
+
+![Example](./examples/outline-items.png)
+
+
 ## `checklist` function
 
 ```typ
@@ -178,6 +212,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
   stroke: rgb("#616161"),
   radius: .1em,
   light: false, 
+  size: 0.8em,
   marker-map: (:),
   highlight-map: (:),
   highlight: true,
@@ -192,6 +227,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - `stroke`: [`string`] &mdash; The stroke color for the checklist marker.
 - `radius`: [`string`] &mdash; The radius of the checklist marker.
 - `light`: [`bool'] &mdash; The style of the markers, light or dark.
+- `size`: [`length`] &mdash; The size of the checklist symbols
 - `marker-map`: [`map`] &mdash; The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
 - `highlight-map`: [`map`] &mdash; The map of the highlight functions. It should be a map of characther to functions, see examples.
 - `highlight`: [`bool`] &mdash; The flag to enable or disable the application of highlight functions to the list item.
