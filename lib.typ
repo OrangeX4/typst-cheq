@@ -3,6 +3,7 @@
 /// - `fill`: [`string`] - The fill color for the unchecked symbol.
 /// - `stroke`: [`string`] - The stroke color for the unchecked symbol.
 /// - `radius`: [`string`] - The radius of the unchecked symbol.
+/// - `size`: [`length`] - The size of the unchecked symbol
 #let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em) = move(dy: vshift, {
   box(
     height: 0pt,
@@ -27,6 +28,7 @@
 /// - `fill`: [`string`] - The fill color for the checked symbol.
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
+/// - `size`: [`length`] - The size of the checked symbol
 /// - `light` : ['bool'] - The style of the checked symbol (light or dark)
 #let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
   dy: vshift, {
@@ -72,6 +74,7 @@
 /// - `fill`: [`string`] - The fill color for the incomplete symbol.
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
+///  - `size`: [`length`] - The size of the incomplete symbol
 /// - `light` : ['bool'] - The style of the incomplete symbol (light or dark)
 #let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
   dy: vshift, {
@@ -110,6 +113,7 @@
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
+///  - `size`: [`length`] - The size of the canceled symbol
 /// - `light` : ['bool'] - The style of the canceled symbol (light or dark)
 #let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
   dy: vshift, {
@@ -142,6 +146,7 @@
 /// - `fill`: [`string`] - The fill color for the character symbol.
 /// - `stroke`: [`string`] - The stroke color for the character symbol.
 /// - `radius`: [`string`] - The radius of the character symbol.
+///  - `size`: [`length`] - The size of the character symbol
 /// - `light` : ['bool'] - The style of the character symbol (light or dark)
 #let character-sym(
   symbol: " ",
@@ -174,6 +179,44 @@
 })
 
 
+#let to-string(content) = {
+  if type(content) == str {
+    content
+  } else if content.has("text") {
+    content.text
+  } else if content.has("children") {
+    content.children.map(to-string).join("")
+  } else if content.has("body") {
+    to-string(content.body)
+  } else if content == [ ] {
+    " "
+  }
+}
+
+#let first-line(text) = {
+  let lines = text.split("[")
+  lines.at(0)
+}
+
+#let cheq-outline-entry(body, marker) = {
+  // invisible figure, s.t. we can reference it in the outline
+  // probably depends on https://github.com/typst/typst/issues/147 for a cleaner solution
+  hide(
+    box(
+      height: 0pt,
+      width: 0pt,
+      figure(
+        none,
+        kind: "cheq-"+str(marker),
+        supplement: [],
+        caption: first-line(to-string(body)),
+        outlined: true,
+      ),
+    ),
+  )
+}
+
+
 /// `checklist` function.
 ///
 /// Example: `#show: checklist.with(fill: luma(95%), stroke: blue, radius: .2em)`
@@ -184,6 +227,7 @@
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
 /// - `light`: [`bool'] - The style of the markers, light or dark.
+///  - `size`: [`length`] - The size of the checklist symbols
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
 /// - `highlight-map`: [`map`] - The map of the highlight functions. It should be a map of characther to functions, see examples.
 /// - `highlight`: [`bool`] - The flag to enable or disable the application of highlight functions to the list item.
@@ -363,9 +407,10 @@
             if not ("html" in dictionary(std) and target() == "html") {
               if highlight {
                 let highligh-func = highlight-map.at(marker-text, default: it => { it })
-                items-list.push(highligh-func(children.slice(4).sum()))
+                items-list.push(highligh-func([#cheq-outline-entry(children.slice(4).sum(), marker-text)#children.slice(4).sum()]))
               } else {
-                items-list.push(children.slice(4).sum())
+                items-list.push([#cheq-outline-entry(children.slice(4).sum(), marker-text)#children.slice(4).sum()
+                ])
               }
             }
           } else {
