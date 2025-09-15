@@ -278,11 +278,8 @@
 
     if is-checklist {
       if not ("html" in dictionary(std) and target() == "html") {
-        let checklist-enumeration(n) = {
-          symbols-list.at(n - 1)
-        }
         enum(
-          numbering: checklist-enumeration,
+          numbering: (.., n) => { symbols-list.at(n - 1) },
           tight: it.tight,
           indent: it.indent,
           body-indent: it.body-indent,
