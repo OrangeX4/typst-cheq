@@ -10,7 +10,7 @@
     width: size / 4,
   )
   box(
-    stroke: size/16 + stroke,
+    stroke: size / 16 + stroke,
     fill: fill,
     height: size / 2,
     width: size / 2,
@@ -31,35 +31,28 @@
 /// - `size`: [`length`] - The size of the checked symbol
 /// - `light` : ['bool'] - The style of the checked symbol (light or dark)
 #let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
-  dy: vshift, {
+  dy: vshift,
+  {
     box(
       height: 0pt,
       width: size / 4,
     )
     box(
-      stroke: size/16 + stroke,
+      stroke: size / 16 + stroke,
       fill: if light { fill } else { stroke },
       height: size / 2,
       width: size / 2,
       radius: radius,
       outset: size / 4,
       {
-        place(dy: 0.22 * size , dx: -0.04 * size, 
-        rotate(45deg, reflow: false, origin: left+horizon,
-        line(
-          length: 3 * size / 8 ,
-          stroke: if light { stroke } else { fill } + size/8,
-        )
-        )
-        )
-        place(dy: 0.442 * size , dx: 0.18 * size, 
-        rotate(-45deg, reflow: false, origin: left+horizon,
-        line(
+        place(dy: 0.22 * size, dx: -0.04 * size, rotate(45deg, reflow: false, origin: left + horizon, line(
+          length: 3 * size / 8,
+          stroke: if light { stroke } else { fill } + size / 8,
+        )))
+        place(dy: 0.442 * size, dx: 0.18 * size, rotate(-45deg, reflow: false, origin: left + horizon, line(
           length: 0.6 * size,
-          stroke: if light { stroke } else { fill } + size/8,
-        )
-        )
-        )
+          stroke: if light { stroke } else { fill } + size / 8,
+        )))
       },
     )
     box(
@@ -77,13 +70,14 @@
 ///  - `size`: [`length`] - The size of the incomplete symbol
 /// - `light` : ['bool'] - The style of the incomplete symbol (light or dark)
 #let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
-  dy: vshift, {
+  dy: vshift,
+  {
     box(
       height: 0pt,
       width: size / 4,
     )
     box(
-      stroke: size/16 + stroke,
+      stroke: size / 16 + stroke,
       fill: fill,
       height: size / 2,
       width: size / 2,
@@ -92,7 +86,7 @@
       if light {
         box(move(dy: size / 2, dx: 0.0em, rotate(90deg, reflow: false, line(
           length: size,
-          stroke: stroke + size*3/32,
+          stroke: stroke + size * 3 / 32,
         ))))
       } else {
         move(dy: -size / 4, dx: size / 4, box(fill: stroke, height: size, width: size / 2, radius: (
@@ -116,20 +110,21 @@
 ///  - `size`: [`length`] - The size of the canceled symbol
 /// - `light` : ['bool'] - The style of the canceled symbol (light or dark)
 #let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, size: 0.8em, vshift: 0.1em, light: false) = move(
-  dy: vshift, {
+  dy: vshift,
+  {
     box(
       height: 0pt,
       width: size / 4,
     )
     box(
-      stroke: size/16 + stroke,
+      stroke: size / 16 + stroke,
       fill: if light { fill } else { stroke },
       height: size / 2,
       width: size / 2,
       radius: radius,
       outset: size / 4,
       {
-        align(center + horizon, box(height: .16 * size, width: 0.7*size, fill: if light { stroke } else { fill }))
+        align(center + horizon, box(height: .16 * size, width: 0.7 * size, fill: if light { stroke } else { fill }))
       },
     )
     box(
@@ -162,7 +157,7 @@
     width: size / 4,
   )
   box(
-    stroke: size/16 + stroke,
+    stroke: size / 16 + stroke,
     fill: if light { fill } else { stroke },
     height: size / 2,
     width: size / 2,
@@ -207,7 +202,7 @@
       width: 0pt,
       figure(
         none,
-        kind: "cheq-"+str(marker),
+        kind: "cheq-" + str(marker),
         supplement: [],
         caption: first-line(to-string(body)),
         outlined: true,
@@ -407,7 +402,9 @@
             if not ("html" in dictionary(std) and target() == "html") {
               if highlight {
                 let highligh-func = highlight-map.at(marker-text, default: it => { it })
-                items-list.push(highligh-func([#cheq-outline-entry(children.slice(4).sum(), marker-text)#children.slice(4).sum()]))
+                items-list.push(highligh-func([#cheq-outline-entry(children.slice(4).sum(), marker-text)#(
+                    children.slice(4).sum()
+                  )]))
               } else {
                 items-list.push([#cheq-outline-entry(children.slice(4).sum(), marker-text)#children.slice(4).sum()
                 ])
