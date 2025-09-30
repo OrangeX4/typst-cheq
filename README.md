@@ -124,7 +124,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 
 ![Example](./examples/custom-styles.png)
 
-## Custom Hihlightd Of List Items
+## Custom Highlight Of List Items
 
 ```typ
 #import "@preview/cheq:0.3.0": checklist
