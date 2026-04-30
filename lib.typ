@@ -41,10 +41,10 @@
   height: .8em,
   width: .8em,
   radius: radius,
-  if light{
-    box(move(dy: .4em, dx: 0.0em, rotate(90deg, reflow: false, line(length: 0.8em, stroke: if light {stroke} else {fill} + .07em))))
+  if light {
+    box(move(dy: .4em, dx: .0em, rotate(90deg, reflow: false, line(length: .8em, stroke: stroke + .07em))))
   } else {
-    box(fill: stroke, height: .8em, width: .4em, radius: (top-left: radius, bottom-left: radius))
+    box(stroke: none, height: 100%, width: 100%, radius: radius, clip: true, box(fill: stroke, height: 100%, width: 50%))
   },
 ))
 
