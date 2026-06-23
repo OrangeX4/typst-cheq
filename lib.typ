@@ -3,7 +3,7 @@
 /// - `fill`: [`string`] - The fill color for the unchecked symbol.
 /// - `stroke`: [`string`] - The stroke color for the unchecked symbol.
 /// - `radius`: [`string`] - The radius of the unchecked symbol.
-#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: -.08em, box(
+#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = move(dy: .07em, box(
   // Typst 0.15 keeps a box's internal baseline by default. Checklist markers
   // are enum numbers, so pin their baseline to the bottom to keep item text
   // aligned with the marker instead of with any internal drawing content.
@@ -21,7 +21,7 @@
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
 /// - `light` : ['bool'] - The style of the checked symbol (light or dark)
-#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
+#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
@@ -40,7 +40,7 @@
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
 /// - `light` : ['bool'] - The style of the incomplete symbol (light or dark)
-#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
+#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
   fill: fill,
@@ -60,7 +60,7 @@
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
 /// - `light` : ['bool'] - The style of the canceled symbol (light or dark)
-#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
+#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
@@ -80,7 +80,7 @@
 /// - `stroke`: [`string`] - The stroke color for the character symbol.
 /// - `radius`: [`string`] - The radius of the character symbol.
 /// - `light` : ['bool'] - The style of the character symbol (light or dark)
-#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: -.08em, box(
+#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
   fill: if light {fill} else {stroke},
