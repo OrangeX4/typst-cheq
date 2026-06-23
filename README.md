@@ -9,7 +9,7 @@ Checklists are incredibly useful for keeping track of important items. We can us
 Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachter between square parentheses at the beginning of a list item, that character will be simply displayed inside a checkbox (like [!], [?], [N] in the examples below)
 
 ```typ
-#import "@preview/cheq:0.3.0": checklist
+#import "@preview/cheq:0.4.0": checklist
 
 #set page(width: auto, height: auto, margin: 2em)
 
@@ -57,7 +57,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 ## Custom Styles
 
 ```typ
-#import "@preview/cheq:0.3.0": checklist
+#import "@preview/cheq:0.4.0": checklist
 
 #set page(width: auto, height: auto, margin: 2em)
 
@@ -127,7 +127,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 ## Custom Highlight Of List Items
 
 ```typ
-#import "@preview/cheq:0.3.0": checklist
+#import "@preview/cheq:0.4.0": checklist
 
 #set page(width: auto, height: auto, margin: 2em)
 
