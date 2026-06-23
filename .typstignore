@@ -4,6 +4,7 @@
 .github
 scripts
 Justfile
-examples
+examples/*.typ
+examples/cheq-spacing.png
 out
 typst-packages

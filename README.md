@@ -52,7 +52,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - [d] down
 ```
 
-![Example](./examples/basic-example.png)
+![Checklist example showing default and extra markers](./examples/basic-example.png)
 
 ## Custom Styles
 
@@ -122,7 +122,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - [ ] Comet Haley
 ```
 
-![Example](./examples/custom-styles.png)
+![Checklist examples with custom marker styles](./examples/custom-styles.png)
 
 ## Custom Highlight Of List Items
 
@@ -167,7 +167,7 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - [N] Oort Cloud
 ```
 
-![Example](./examples/highlight-items.png)
+![Checklist example with highlighted list items](./examples/highlight-items.png)
 
 
 ## `checklist` function
@@ -183,7 +183,9 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
   highlight: true,
   extras: false, 
   body,
-) = { .. }
+) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -238,7 +240,9 @@ The Extra map is:
 ## `unchecked-sym` function
 
 ```typ
-#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = { .. }
+#let unchecked-sym(fill: white, stroke: rgb("#616161"), radius: .1em) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -251,7 +255,9 @@ The Extra map is:
 ## `checked-sym` function
 
 ```typ
-#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = { .. }
+#let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -264,7 +270,9 @@ The Extra map is:
 ## `incomplete-sym` function
 
 ```typ
-#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = { .. }
+#let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -278,7 +286,9 @@ The Extra map is:
 ## `canceled-sym` function
 
 ```typ
-#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = { .. }
+#let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -292,7 +302,9 @@ The Extra map is:
 ## `character-sym` function
 
 ```typ
-#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = { .. }
+#let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = {
+  // ...
+}
 ```
 
 **Arguments:**
@@ -309,7 +321,7 @@ The Extra map is:
 
 Cheq provides experimental support for HTML rendering, allowing you to embed HTML elements within Typst documents. This feature is still under active development, and the external API is not exposed at this time. It is subject to change without notice and may have compatibility issues.
 
-![HTML Example](./examples/html.png)
+![Experimental HTML rendering example](./examples/html.png)
 
 
 ## License
