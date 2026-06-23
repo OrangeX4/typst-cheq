@@ -17,17 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install just
         uses: taiki-e/install-action@v2
         with:
           tool: just
-
-      - name: Setup typst
-        uses: typst-community/setup-typst@v3
-        with:
-          typst-version: latest
 
       - name: Determine and check package metadata
         run: |
@@ -42,11 +37,10 @@ jobs:
 
       - name: Build package
         run: |
-          just doc
           just package out
 
       - name: Checkout package registry
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.REGISTRY_REPO }}
           token: ${{ secrets.REGISTRY_TOKEN }}

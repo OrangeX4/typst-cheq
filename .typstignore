@@ -1,0 +1,9 @@
+# this is not a standard ignore file; it is used by scripts/package
+# list files and directories that should not be uploaded to Universe
+
+.github
+scripts
+Justfile
+examples
+out
+typst-packages

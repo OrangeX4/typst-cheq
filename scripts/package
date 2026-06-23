@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -eu
+
+# adapted from https://github.com/johannes-wolf/cetz/blob/35c0868378cea5ad323cc0d9c2f76de8ed9ba5bd/scripts/package
+# licensed under Apache License 2.0
+
+. "$(dirname "${BASH_SOURCE[0]}")/setup"
+
+if (( $# < 1 )) || [[ "${1:-}" == "help" ]]; then
+  echo "package TARGET"
+  echo ""
+  echo "Packages all relevant files into a directory named '<name>/<version>'"
+  echo "at TARGET. If TARGET is set to @local or @preview, the local Typst package"
+  echo "directory will be used so that the package gets installed for local use."
+  echo "The name and version are read from 'typst.toml' in the project root."
+  echo ""
+  echo "Local package prefix: $DATA_DIR/typst/packages/local"
+  echo "Local preview package prefix: $DATA_DIR/typst/packages/preview"
+  exit 1
+fi
+
+cd "$ROOT"
+
+TARGET="$(resolve-target "${1:?Missing target path, @local or @preview}")"
+echo "Install dir: $TARGET"
+
+ignores=()
+while IFS= read -r ignore; do
+  ignores+=("$ignore")
+done < <(grep -v '^#' .typstignore | grep '[^[:blank:]]' || true)
+
+function should-include() {
+  local file="$1"
+  local include=1
+  local ignore
+
+  for ignore in "${ignores[@]}"; do
+    if [[ "$ignore" =~ ^! ]]; then
+      ignore="${ignore:1}"
+      if [[ "$file" == ./$ignore ]]; then
+        include=1
+      fi
+    elif [[ "$file" == ./$ignore ]]; then
+      include=0
+    fi
+  done
+
+  [[ "$include" == 1 ]]
+}
+
+function enumerate() {
+  local root="$1"
+
+  if [[ -f "$root" ]]; then
+    echo "$root"
+    return
+  fi
+
+  local files=()
+  local file
+  while IFS= read -r file; do
+    files+=("$file")
+  done < <(find "$root" \
+    -mindepth 1 -maxdepth 1 \
+    -not -name .git \
+    -not -name .typstignore)
+
+  for file in "${files[@]}"; do
+    if should-include "$file"; then
+      enumerate "$file"
+    fi
+  done
+}
+
+files=()
+while IFS= read -r file; do
+  files+=("$file")
+done < <(enumerate ".")
+
+TMP="$(mktemp -d)"
+
+for file in "${files[@]}"; do
+  mkdir -p "$TMP/$(dirname "$file")" 2>/dev/null
+  cp -R "$ROOT/$file" "$TMP/$file"
+done
+
+TARGET="${TARGET:?}/${PKG_PREFIX:?}/${VERSION:?}"
+echo "Packaged to: $TARGET"
+if rm -r "${TARGET:?}" 2>/dev/null; then
+  echo "Overwriting existing version."
+fi
+mkdir -p "$TARGET"
+
+shopt -s dotglob
+mv "$TMP"/* "$TARGET"
