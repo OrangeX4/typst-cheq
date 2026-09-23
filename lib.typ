@@ -20,7 +20,7 @@
 /// - `fill`: [`string`] - The fill color for the checked symbol.
 /// - `stroke`: [`string`] - The stroke color for the checked symbol.
 /// - `radius`: [`string`] - The radius of the checked symbol.
-/// - `light` : ['bool'] - The style of the checked symbol (light or dark)
+/// - `light` : [`bool`] - The style of the checked symbol (light or dark)
 #let checked-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
@@ -39,7 +39,7 @@
 /// - `fill`: [`string`] - The fill color for the incomplete symbol.
 /// - `stroke`: [`string`] - The stroke color for the incomplete symbol.
 /// - `radius`: [`string`] - The radius of the incomplete symbol.
-/// - `light` : ['bool'] - The style of the incomplete symbol (light or dark)
+/// - `light` : [`bool`] - The style of the incomplete symbol (light or dark)
 #let incomplete-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
@@ -59,7 +59,7 @@
 /// - `fill`: [`string`] - The fill color for the canceled symbol.
 /// - `stroke`: [`string`] - The stroke color for the canceled symbol.
 /// - `radius`: [`string`] - The radius of the canceled symbol.
-/// - `light` : ['bool'] - The style of the canceled symbol (light or dark)
+/// - `light` : [`bool`] - The style of the canceled symbol (light or dark)
 #let canceled-sym(fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
@@ -79,7 +79,7 @@
 /// - `fill`: [`string`] - The fill color for the character symbol.
 /// - `stroke`: [`string`] - The stroke color for the character symbol.
 /// - `radius`: [`string`] - The radius of the character symbol.
-/// - `light` : ['bool'] - The style of the character symbol (light or dark)
+/// - `light` : [`bool`] - The style of the character symbol (light or dark)
 #let character-sym(symbol: " ", fill: white, stroke: rgb("#616161"), radius: .1em, light: false) = move(dy: .07em, box(
   baseline: bottom,
   stroke: .05em + stroke,
@@ -102,9 +102,9 @@
 /// - `fill`: [`string`] - The fill color for the checklist marker.
 /// - `stroke`: [`string`] - The stroke color for the checklist marker.
 /// - `radius`: [`string`] - The radius of the checklist marker.
-/// - `light`: [`bool'] - The style of the markers, light or dark.
+/// - `light`: [`bool`] - The style of the markers, light or dark.
 /// - `marker-map`: [`map`] - The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
-/// - `highlight-map`: [`map`] - The map of the highlight functions. It should be a map of characther to functions, see examples.
+/// - `highlight-map`: [`map`] - The map of the highlight functions. It should be a map of character to functions, see examples.
 /// - `highlight`: [`bool`] - The flag to enable or disable the application of highlight functions to the list item.
 /// - `extras`: [`bool`] - The flag that includes or excludes the extra map of symbols
 /// - `body`: [`content`] - The main body from `#show: checklist` rule.
@@ -270,8 +270,8 @@
             }
             if not ("html" in dictionary(std) and target() == "html") {
               if highlight {
-                let highligh-func = highlight-map.at(marker-text, default: it => {it})
-                items-list.push(highligh-func(children.slice(4).sum()))
+                let highlight-func = highlight-map.at(marker-text, default: it => {it})
+                items-list.push(highlight-func(children.slice(4).sum()))
               } else { 
                 items-list.push(children.slice(4).sum())
               }

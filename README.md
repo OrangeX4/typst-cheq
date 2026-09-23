@@ -6,7 +6,7 @@ Write markdown-like checklist easily.
 
 Checklists are incredibly useful for keeping track of important items. We can use the cheq package to achieve checklist syntax similar to [GitHub Flavored Markdown](https://github.github.com/gfm/#task-list-items-extension-) and [Minimal](https://minimal.guide/checklists).
 
-Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachter between square parentheses at the beginning of a list item, that character will be simply displayed inside a checkbox (like [!], [?], [N] in the examples below)
+Cheq has 4 predefined symbols: `[ ]`, `[x]`, `[/]`, `[-]`. If you put any other character between square parentheses at the beginning of a list item, that character will be simply displayed inside a checkbox (like `[!]`, `[?]`, `[N]` in the examples below).
 
 ```typ
 #import "@preview/cheq:0.4.0": checklist
@@ -193,9 +193,9 @@ Cheq has 4 predefined symbols:[ ], [x], [/], [-]. If you put any other charachte
 - `fill`: [`string`] &mdash; The fill color for the checklist marker.
 - `stroke`: [`string`] &mdash; The stroke color for the checklist marker.
 - `radius`: [`string`] &mdash; The radius of the checklist marker.
-- `light`: [`bool'] &mdash; The style of the markers, light or dark.
+- `light`: [`bool`] &mdash; The style of the markers, light or dark.
 - `marker-map`: [`map`] &mdash; The map of the checklist marker. It should be a map of character to symbol function, such as `(" ": sym.ballot, "x": sym.ballot.cross, "-": sym.bar.h, "/": sym.slash.double)`.
-- `highlight-map`: [`map`] &mdash; The map of the highlight functions. It should be a map of characther to functions, see examples.
+- `highlight-map`: [`map`] &mdash; The map of the highlight functions. It should be a map of character to functions, see examples.
 - `highlight`: [`bool`] &mdash; The flag to enable or disable the application of highlight functions to the list item.
 - `extras`: [`bool`] &mdash; The flag that includes or excludes the extra map of symbols
 - `body`: [`content`] &mdash; The main body from `#show: checklist` rule.
@@ -265,7 +265,7 @@ The Extra map is:
 - `fill`: [`string`] &mdash; The fill color for the checked symbol.
 - `stroke`: [`string`] &mdash; The stroke color for the checked symbol.
 - `radius`: [`string`] &mdash; The radius of the checked symbol.
-- `light` : ['bool'] &mdash; The style of the checked symbol (light or dark)
+- `light` : [`bool`] &mdash; The style of the checked symbol (light or dark)
 
 ## `incomplete-sym` function
 
@@ -280,7 +280,7 @@ The Extra map is:
 - `fill`: [`string`] &mdash; The fill color for the incomplete symbol.
 - `stroke`: [`string`] &mdash; The stroke color for the incomplete symbol.
 - `radius`: [`string`] &mdash; The radius of the incomplete symbol.
-- `light` : ['bool'] &mdash; The style of the incomplete symbol (light or dark)
+- `light` : [`bool`] &mdash; The style of the incomplete symbol (light or dark)
 
 
 ## `canceled-sym` function
@@ -296,7 +296,7 @@ The Extra map is:
 - `fill`: [`string`] &mdash; The fill color for the canceled symbol.
 - `stroke`: [`string`] &mdash; The stroke color for the canceled symbol.
 - `radius`: [`string`] &mdash; The radius of the canceled symbol.
-- `light` : ['bool'] &mdash; The style of the canceled symbol (light or dark)
+- `light` : [`bool`] &mdash; The style of the canceled symbol (light or dark)
 
 
 ## `character-sym` function
@@ -313,7 +313,7 @@ The Extra map is:
 - `fill`: [`string`] &mdash; The fill color for the character symbol.
 - `stroke`: [`string`] &mdash; The stroke color for the character symbol.
 - `radius`: [`string`] &mdash; The radius of the character symbol.
-- `light` : ['bool'] &mdash; The style of the character symbol (light or dark)
+- `light` : [`bool`] &mdash; The style of the character symbol (light or dark)
 
 
 
